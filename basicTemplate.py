@@ -46,18 +46,18 @@ while True:
         time.sleep(60)
         continue
 
-    # 確保 IR 補光燈長亮
+    # 啟動 IR 燈
     relay_on(ir_led)
 
-    ret, frame = cap.read()
+    ret, frame = cap.read() #從相機取一帪畫面
     if not ret:
         continue
 
-    rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    results = pose.process(rgb_frame)
+    rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB) #顏色格式轉成 RGB
+    results = pose.process(rgb_frame)                  #把圖丟給MediaPipe模型畫骨架
 
     if results.pose_landmarks:
-        landmarks = results.pose_landmarks.landmark
+        landmarks = results.pose_landmarks.landmark #取的mediaPipe的標記點
         nose_y = landmarks[mp_pose.PoseLandmark.NOSE].y
         hip_y = landmarks[mp_pose.PoseLandmark.LEFT_HIP].y
 
